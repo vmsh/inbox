@@ -186,8 +186,9 @@ module.exports["Inbox tests"] = {
             test.ifError(err);
             this.client.fetchData(4, function(err, message){
                 test.ifError(err);
-                test.equal(Object.keys(message).length, 11);
+                test.equal(Object.keys(message).length, 12);
                 test.equal(message.title, "hello 4");
+                test.ok(message.references);
                 test.equal(message.from.address, "sender@example.com");
                 test.equal(message.to[0].name, "Receiver name");
                 test.done();
