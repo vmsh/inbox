@@ -25,7 +25,14 @@ module.exports["Inbox tests"] = {
                         {raw: "Subject: hello 5\r\n\r\nWorld 5!"},
                         {raw: "Subject: hello 6\r\n\r\nWorld 6!"},
                         {raw: "Content-Type: text/plain; charset=utf-8\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nwow. very mail. such bodystructure."},
-                        {raw: "Content-Type: multipart/alternative;\r\n boundary=\"=_BOUNDARY_BOUNDARY_BOUNDARY_\";\r\n    charset=\"UTF-8\"\r\nMIME-Version: 1.0\r\nSender: \"FOOBAR\" <foo@bar.io>\r\n\r\nThis is a multi-part message in MIME format\r\n\r\n--=_BOUNDARY_BOUNDARY_BOUNDARY_\r\nContent-Type: text/plain\r\nContent-Transfer-Encoding: quoted-printable\r\n\r\nFOOFOOFOOFOO\r\n\r\n\r\n--=_BOUNDARY_BOUNDARY_BOUNDARY_\r\nContent-Type: text/html\r\nContent-Transfer-Encoding: quoted-printable\r\n\r\n<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">\r\n<html>\r\n  <head>\r\n  <meta http-equiv=3D\"content-type\" content=3D\"text/html; charset=3Diso-=\r\n8859-1\">\r\n  <title>STUFF</title>\r\n  </head>\r\n  <body>\r\n  <p>stuff<p>\r\n  </body>\r\n</html>\r\n\r\n--=_BOUNDARY_BOUNDARY_BOUNDARY_--"}
+                        {raw: "Content-Type: multipart/alternative;\r\n boundary=\"=_BOUNDARY_BOUNDARY_BOUNDARY_\";\r\n    charset=\"UTF-8\"\r\nMIME-Version: 1.0\r\nSender: \"FOOBAR\" <foo@bar.io>\r\n\r\nThis is a multi-part message in MIME format\r\n\r\n--=_BOUNDARY_BOUNDARY_BOUNDARY_\r\nContent-Type: text/plain\r\nContent-Transfer-Encoding: quoted-printable\r\n\r\nFOOFOOFOOFOO\r\n\r\n\r\n--=_BOUNDARY_BOUNDARY_BOUNDARY_\r\nContent-Type: text/html\r\nContent-Transfer-Encoding: quoted-printable\r\n\r\n<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">\r\n<html>\r\n  <head>\r\n  <meta http-equiv=3D\"content-type\" content=3D\"text/html; charset=3Diso-=\r\n8859-1\">\r\n  <title>STUFF</title>\r\n  </head>\r\n  <body>\r\n  <p>stuff<p>\r\n  </body>\r\n</html>\r\n\r\n--=_BOUNDARY_BOUNDARY_BOUNDARY_--"},
+                        {raw: "From: =?utf-8?Q??= <sender@example.com>\r\n"+
+                            "To: Receiver name <receiver@example.com>\r\n"+
+                            "Subject: Testime mime =?utf-8?Q?=BD?= encode =?iso-8859-1?b?THV6b26uMTQ=?= dot CoM 2\r\n"+
+                            "Message-Id: <abcde>\r\n"+
+                            "Date: Thu, 7 Aug 2014 14:46:23 +0300\r\n"+
+                            "\r\n"+
+                            "Encode test!"},
                     ]
                 },
                 "": {
@@ -85,9 +92,9 @@ module.exports["Inbox tests"] = {
     "Open mailbox": function(test){
         this.client.openMailbox("INBOX", function(err, mailbox){
             test.ifError(err);
-            test.equal(mailbox.count, 8);
+            test.equal(mailbox.count, 9);
             test.equal(mailbox.UIDValidity, "1");
-            test.equal(mailbox.UIDNext, "9");
+            test.equal(mailbox.UIDNext, "10");
             test.done();
         });
     },
@@ -113,7 +120,7 @@ module.exports["Inbox tests"] = {
             test.ifError(err);
             this.client.listMessages(-100, function(err, messages){
                 test.ifError(err);
-                test.equal(messages.length, 8);
+                test.equal(messages.length, 9);
                 for(var i = 0; i < messages.length; i++) {
                     test.equal(messages[i].UIDValidity, 1);
                     test.equal(messages[i].UID, i+1);
@@ -171,7 +178,7 @@ module.exports["Inbox tests"] = {
             test.ifError(err);
             this.client.listFlags(-100, function(err, messages){
                 test.ifError(err);
-                test.equal(messages.length, 8);
+                test.equal(messages.length, 9);
                 for(var i = 0; i < messages.length; i++) {
                     test.equal(messages[i].flags.length, i === 1 ? 1 : 0);
                 }
@@ -211,6 +218,17 @@ module.exports["Inbox tests"] = {
                 test.done();
             });
 
+        }).bind(this));
+    },
+
+    "Check sender and subject encoding": function(test){
+        this.client.openMailbox("INBOX", (function(err){
+            test.ifError(err);
+            this.client.fetchData(9, function(err, message){
+                test.ifError(err);
+                test.equal(message.from.name, "");
+                test.done();
+            });
         }).bind(this));
     },
 
@@ -272,12 +290,12 @@ module.exports["Inbox tests"] = {
     "Store message": function(test){
         this.client.openMailbox("INBOX", (function(err, mailbox){
             test.ifError(err);
-            test.equal(mailbox.count, 8);
+            test.equal(mailbox.count, 9);
             this.client.storeMessage("Subject: hello 7\r\n\r\nWorld 7!", ["\\Seen"], (function(err, params){
                 test.ifError(err);
                 test.equal(params.UID, mailbox.UIDNext);
                 this.client.openMailbox("INBOX", function(err, mailbox){
-                    test.equal(mailbox.count, 9);
+                    test.equal(mailbox.count, 10);
                     test.done();
                 });
             }).bind(this));
@@ -302,12 +320,12 @@ module.exports["Inbox tests"] = {
     "Delete message": function(test){
         this.client.openMailbox("INBOX", (function(err, mailbox){
             test.ifError(err);
-            test.equal(mailbox.count, 8);
+            test.equal(mailbox.count, 9);
             this.client.deleteMessage(6, (function(err){
                 test.ifError(err);
                 this.client.openMailbox("INBOX", function(err, mailbox){
                     test.ifError(err);
-                    test.equal(mailbox.count, 7);
+                    test.equal(mailbox.count, 8);
                     test.done();
                 });
             }).bind(this));
