@@ -1,5 +1,7 @@
 # inbox
 
+**This repository is no longer actively maintained. Please check for any updated forks.**
+
 This is a work in progress IMAP client for node.js.
 
 The project consists of two major parts
