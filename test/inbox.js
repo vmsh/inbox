@@ -26,7 +26,7 @@ module.exports["Inbox tests"] = {
                         {raw: "Subject: hello 6\r\n\r\nWorld 6!"},
                         {raw: "Content-Type: text/plain; charset=utf-8\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nwow. very mail. such bodystructure."},
                         {raw: "Content-Type: multipart/alternative;\r\n boundary=\"=_BOUNDARY_BOUNDARY_BOUNDARY_\";\r\n    charset=\"UTF-8\"\r\nMIME-Version: 1.0\r\nSender: \"FOOBAR\" <foo@bar.io>\r\n\r\nThis is a multi-part message in MIME format\r\n\r\n--=_BOUNDARY_BOUNDARY_BOUNDARY_\r\nContent-Type: text/plain\r\nContent-Transfer-Encoding: quoted-printable\r\n\r\nFOOFOOFOOFOO\r\n\r\n\r\n--=_BOUNDARY_BOUNDARY_BOUNDARY_\r\nContent-Type: text/html\r\nContent-Transfer-Encoding: quoted-printable\r\n\r\n<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">\r\n<html>\r\n  <head>\r\n  <meta http-equiv=3D\"content-type\" content=3D\"text/html; charset=3Diso-=\r\n8859-1\">\r\n  <title>STUFF</title>\r\n  </head>\r\n  <body>\r\n  <p>stuff<p>\r\n  </body>\r\n</html>\r\n\r\n--=_BOUNDARY_BOUNDARY_BOUNDARY_--"},
-                        {raw: "From: =?utf-8?Q??= <sender@example.com>\r\n"+
+                        {raw: "From: =?ISO-8859-1?Q?a?=  =?ISO-8859-1?Q?b?= <sender@example.com>\r\n"+
                             "To: Receiver name <receiver@example.com>\r\n"+
                             "Subject: Testime mime =?utf-8?Q?=BD?= encode =?iso-8859-1?b?THV6b26uMTQ=?= dot CoM 2\r\n"+
                             "Message-Id: <abcde>\r\n"+
@@ -226,7 +226,7 @@ module.exports["Inbox tests"] = {
             test.ifError(err);
             this.client.fetchData(9, function(err, message){
                 test.ifError(err);
-                test.equal(message.from.name, "");
+                test.equal(message.from.name, "ab");
                 test.done();
             });
         }).bind(this));
