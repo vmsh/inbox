@@ -16,7 +16,7 @@
   },
   "devDependencies": {
     "nodeunit": "*",
-    "hoodiecrow": "~1.1.19"
+    "hoodiecrow-imap": "*"
   },
   "scripts": {
     "test": "nodeunit test"

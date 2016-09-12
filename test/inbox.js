@@ -1,7 +1,7 @@
 "use strict";
 
 var inbox = require(".."),
-    hoodiecrow = require("hoodiecrow");
+    hoodiecrow = require("hoodiecrow-imap");
 
 var IMAP_PORT = 1143;
 
