@@ -15,7 +15,7 @@
     "xoauth2": "*"
   },
   "devDependencies": {
-    "nodeunit": "0.9.0",
+    "nodeunit": "*",
     "hoodiecrow-imap": "*"
   },
   "scripts": {
