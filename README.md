@@ -613,6 +613,19 @@ client.on("connect", function(){
 });
 ```
 
+### Check STATUS for mailbox
+
+The 1-st parameter is a utf7 encoded name (path ) of required folder 
+The 2-nd parameter status is a parenthesised list items to obtain the status of folder. Can contain: messages, recent, uidnext, uidvalidity, unseen.
+
+```javascript
+client.status('INBOX','(messages unseen recent)',function(error, status){
+    console.log('foder status: messages - %d, unseen - %d, recent - %d', status.messages, status.unseen, status.recent);
+});
+```
+Will produce: 
+foder status: messages - 8119, unseen - 4, recent - 0
+
 ## License
 
 **MIT**
